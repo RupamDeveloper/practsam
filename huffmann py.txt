@@ -1,0 +1,41 @@
+class node:
+    def __init__(self,freq_,symbol_,left_=None,right_=None):
+        self.freq=freq_
+        self.symbol=symbol_
+        self.left=left_
+        self.right=right_
+        self.huff=""
+    
+def print_node(node,val=""):
+    new_val=val+str(node.huff)
+    
+    if node.left:
+        print_node(node.left, new_val)
+    if node.right:
+        print_node(node.right, new_val)
+    if not node.left and not node.right:
+        print(f"{node.symbol} > {new_val}")
+
+char=["a","b","c","d","e","f"]
+freq=[5,9,12,16,13,45]
+nodelist=[]
+for i in range(len(char)):
+    temp = node(freq[i], char[i])
+    nodelist.append(temp)
+    
+while len(nodelist)>1:
+    nodelist=sorted(nodelist,key=lambda x:x.freq)
+    left=nodelist[0]
+    right=nodelist[1]
+    
+    left.huff=0
+    right.huff=1
+    
+    newNode=node(left.freq+right.freq,left.symbol+right.symbol,left,right)
+    nodelist.remove(left)
+    nodelist.remove(right)
+    nodelist.append(newNode)
+    
+print("Characters :", char)
+print("Frequency :", freq, "\n\nHuffman Encoding:")
+print_node(nodelist[0])

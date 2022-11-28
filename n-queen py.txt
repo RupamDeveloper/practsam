@@ -1,0 +1,57 @@
+def is_safe(board,row,col,n):
+    #check columns
+    for c in range(col,-1,-1):
+        if board[row][c]==1:
+            return False
+
+    # check diagonal upper left
+    i=row
+    j=col
+    while i>=0 and j>=0:
+        if board[i][j]==1:
+            return False
+        i-=1
+        j-=1
+
+    # check diagonal lower left
+    i=row
+    j=col
+    while i<n and j>=0:
+        if board[i][j]==1:
+            return False
+        i+=1
+        j-=1
+
+    return True
+
+def nQueens (board,col,n):
+    # check if all columns are traversed
+    if col>=n:
+        return True
+
+    # placing queen and rows
+    for i in range(n):
+        if is_safe(board,i,col,n):
+            board[i][col]=1
+            if nQueens(board,col+1,n): #recurssive
+                return True
+            board[i][col]=0  #backtracking
+        # for i in range(n):
+        #     for j in range(n):
+        #         print(board[i][j], end=' ')
+        #     print()
+        #     print("--------------------------------------------------")
+    return False
+
+
+n=int(input("Enter size of board: "))
+board=[[0 for j in range(n)] for i in range(n)]
+
+if nQueens(board,0,n)==True:
+    for i in range(n):
+        for j in range(n):
+            print(board[i][j], end=' ')
+        print()
+else:
+    print("Not possible ")
+
